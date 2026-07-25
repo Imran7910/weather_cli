@@ -1,17 +1,17 @@
 import requests
+import json
 BASE_URL="https://api.openweathermap.org/data/2.5/weather"
 API_KEY="19e9712d60f01cc61eb6571c9ba428fb"
-CITY="London"
+CITY="london"
 
 request_url = f"{BASE_URL}?q={CITY}&appid={API_KEY}"
 response=requests.get(request_url)
 
 if response.status_code == 200:
-    print("Success the request was fulfilled.")
+    data=response.json()
+    temperature=data['main']['temp']
+    humidity=data['main']['humidity']
+    weather_description = data['weather'][0]['description']
+    print(f"Temperature: {temperature}K,Humidity: {humidity}%, Description: {weather_description}")
 else:
-    print(f"Error: the request is faild with status code {resonse.status_code}")
-
-
-
-
-    
+    print(f"Error: the request is failed with status code {response.status_code}")
