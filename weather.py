@@ -8,21 +8,22 @@ CITY="london"
 request_url = f"{BASE_URL}?q={CITY}&appid={API_KEY}"
 try:
     response=requests.get(request_url)
-    if response.status_code == 200:
-        data=response.json()
-        city_name=data['name']
-        temperature=data['main']['temp']
-        humidity=data['main']['humidity']
-        weather_description = data['weather'][0]['description']
-        print()
-        print(f"Weather in {city_name}:")
-        print("-" * 20)
-        print(f"Temperature: {temperature}K")
-        print(f"Humidity: {humidity}%")
-        print(f"Conditions: {weather_description.capitalize()}")
-        print()
-    else:
-        print(f"Error: the request is failed with status code {response.status_code}")
+    response.raise_for_status()
+    data=response.json()
+    city_name=data['name']
+    temperature=data['main']['temp']
+    humidity=data['main']['humidity']
+    weather_description = data['weather'][0]['description']
+    print()
+    print(f"Weather in {city_name}:")
+    print("-" * 20)
+    print(f"Temperature: {temperature}K")
+    print(f"Humidity: {humidity}%")
+    print(f"Conditions: {weather_description.capitalize()}")
+    print()
+except requests.exceptions.HTTPError as http_err:
+    print(f"An HTTP error occurred: {http_err}")
 except requests.exceptions.RequestException as e:
-    print(f"An error occured: {e}")
+    print(f"Network error: Could not connect to the weather service.")
+    print(f"Details: {e}")
     sys.exit(1)
