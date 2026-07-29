@@ -1,10 +1,12 @@
 import requests
+import os
+from dotenv import load_dotenv
+import argparse
 import json
 import sys
+load_dotenv()
 BASE_URL="https://api.openweathermap.org/data/2.5/weather"
-API_KEY="19e9712d60f01cc61eb6571c9ba428fb"
-CITY="london"
-def get_weather_data(city, api_key):
+def get_weather_data(CITY, API_KEY,units="metrics"):
     request_url = f"{BASE_URL}?q={CITY}&appid={API_KEY}"
     try:
         response=requests.get(request_url)
@@ -29,14 +31,31 @@ def get_weather_data(city, api_key):
         print(f"Network error: Could not connect to the weather service.")
         print(f"Details: {e}")
         return None
-API_KEY = "your_actual_api_key_here"  # IMPORTANT: Replace with your key!
-CITY = "London"
-weather_data = get_weather_data(CITY, API_KEY)
-if weather_data:
+def display_weather_data(data):
     print() 
-    print(f"Weather in {weather_data['city']}:")
+    print(f"Weather in {data['city']}:")
     print("-" * 20) 
-    print(f"Temperature: {weather_data['temperature']}K")
-    print(f"Humidity: {weather_data['humidity']}%")
-    print(f"Conditions: {weather_data['description'].capitalize()}")
+    print(f"Temperature: {data['temperature']}K")
+    print(f"Humidity: {data['humidity']}%")
+    print(f"Conditions: {data['description'].capitalize()}")
     print()
+def main():
+    parser = argparse.ArgumentParser(description="Get the current weather for a specific city.")
+    parser.add_argument("city", help="The name of the city to get the weather for.")
+    parser.add_argument(
+        "--units",
+        choices=["metric", "imperial"],
+        default="metric",
+        help="The units for temperature (metric=Celsius, imperial=Fahrenheit). Default: metric",
+    )
+    args = parser.parse_args()
+    API_KEY=os.getenv("OPENWEATHER_API_KEY")
+    if not API_KEY:
+        print("Error: OPENWEATHER_API_KEY not found.")
+        print("Please create a .env file and add your API key to it.")
+        sys.exit(1)
+    weather_data = get_weather_data(args.city, API_KEY, args.units)
+    if weather_data:
+        display_weather_data(weather_data)
+if __name__ == "__main__":
+    main()
