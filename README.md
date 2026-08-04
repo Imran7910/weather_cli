@@ -1,59 +1,69 @@
-# 🌤️ WeatherCLI
+# 🌤️ Weather CLI
 
-> A fast, minimalistic command-line interface for fetching real-time weather data.
+> A fast, minimalistic command-line interface for fetching real-time weather data powered by OpenWeatherMap API.
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-success.svg)
+![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
 
 ## 📌 Overview
 
-WeatherCLI is a lightweight terminal tool that provides instant, accurate weather forecasts without leaving your workflow. Built with **[Your Language, e.g., Python / Node.js]** and powered by the **[Your Weather API, e.g., OpenWeatherMap API]**, it focuses on speed, simplicity, and clean terminal output.
-
-*(Optional but highly recommended: Add a GIF or screenshot of your CLI in action here)*
-<!-- ![Demo](link-to-your-gif-or-image.gif) -->
+WeatherCLI is a lightweight Python command-line tool that provides instant, accurate weather forecasts without leaving your terminal workflow. It focuses on speed, simplicity, robust error handling, and clean terminal output.
 
 ## ✨ Features
 
-- **Real-Time Data:** Fetches current temperature, humidity, and conditions instantly.
-- **Location Based:** Search by city name, ZIP code, or coordinates.
-- **Minimal Footprint:** No heavy dependencies; optimized for fast execution.
-- **Clean Output:** Formatted terminal display for quick readability.
+- **Real-Time Weather Data:** Fetches current temperature, feels-like temperature, humidity, and weather conditions.
+- **Flexible Location Queries:** Search by city name, including multi-word city names (e.g., "New York", "San Francisco", "London").
+- **Multiple Unit Choices:** Support for `--units metric` (°C), `--units imperial` (°F), or `--units standard` (Kelvin).
+- **Robust Error Handling:** Informative feedback for invalid city names, missing/invalid API keys, network timeouts, and server errors.
 
 ## 🛠️ Tech Stack
 
-- **Language:** [e.g., Python 3.10 / Node.js]
-- **API:** [e.g., OpenWeatherMap API]
-- **Libraries/Frameworks:** [e.g., Click, Requests / Commander.js, Axios]
+- **Language:** Python 3
+- **API:** [OpenWeatherMap Current Weather API](https://openweathermap.org/api)
+- **Libraries:** `requests`, `python-dotenv`, `argparse`
 
-## 🚀 Installation
+## 🚀 Installation & Setup
 
-1. Clone the repository:
+1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/Imran7910/weather_cli.git](https://github.com/Imran7910/weather_cli.git)
+   git clone https://github.com/Imran7910/weather_cli.git
    cd weather_cli
-# [Example for Node.js] npm install
-# [Example for Python] pip install -r requirements.txt
-Set up your API key:
-Create a .env file in the root directory and add your API key:
-Code snippet
-WEATHER_API_KEY=your_api_key_here
+   ```
 
-💻 Usage
-Run the CLI by passing a city name as an argument:
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-Bash
-# Example command
-[e.g., python main.py --city "Hyderabad"]
-# or
-[e.g., weather-cli "Hyderabad"]
+3. **Configure API Key:**
+   Create a `.env` file in the root directory and add your OpenWeatherMap API key:
+   ```env
+   OPENWEATHER_API_KEY=your_api_key_here
+   ```
 
-output will be: 
-Plaintext
-📍 Weather in Hyderabad:
-🌡️  Temperature: 28°C
-☁️  Condition: Partly Cloudy
-💧 Humidity: 65%
+## 💻 Usage
 
+Fetch current weather for a city (defaults to metric / Celsius):
+```bash
+python weather.py "London"
+```
 
-🧠 Why I Built This
-I built this project to deepen my understanding of [mention a skill, e.g., RESTful APIs, asynchronous programming, or building user-friendly command-line interfaces]. It taught me how to handle network errors gracefully, parse JSON data efficiently, and design a seamless developer experience.
+Fetch weather using imperial units (Fahrenheit):
+```bash
+python weather.py "New York" --units imperial
+```
+
+Example Output:
+```text
+Weather in London, GB:
+------------------------------
+Temperature: 18.5°C
+Feels Like:  18.2°C
+Humidity:    68%
+Conditions:  Overcast clouds
+```
+
+View all command options:
+```bash
+python weather.py --help
+```
